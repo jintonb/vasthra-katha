@@ -47,12 +47,6 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link
-            href="/admin"
-            className={`nav-link admin-nav-btn ${pathname.startsWith('/admin') ? 'active' : ''}`}
-          >
-            Admin Panel
-          </Link>
         </div>
 
         {/* Mobile Toggle Button */}
@@ -82,13 +76,6 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <Link
-              href="/admin"
-              className="mobile-nav-link mobile-admin-btn"
-              onClick={() => setIsOpen(false)}
-            >
-              Admin Panel
-            </Link>
           </div>
         </div>
       </nav>
