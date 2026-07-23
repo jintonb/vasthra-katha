@@ -274,7 +274,7 @@ export async function saveBanners(banners) {
 
 // ---------------- AUTO-INCREMENT CODE GENERATOR ----------------
 export async function generateNextProductCode() {
-  if (!sqlClient) return 'VK-1008';
+  if (!sqlClient) return 'HOT-1008';
   try {
     await ensureTables();
     let lastSerial = 1007;
@@ -285,7 +285,7 @@ export async function generateNextProductCode() {
       const prodRows = await queryDb('SELECT code FROM products');
       const serials = prodRows
         .map(r => {
-          const match = String(r.code).match(/VK-(\d+)/i);
+          const match = String(r.code).match(/(?:VK|HOT)-(\d+)/i);
           return match ? parseInt(match[1], 10) : null;
         })
         .filter(Boolean);
@@ -299,9 +299,9 @@ export async function generateNextProductCode() {
       'last_product_serial',
       String(nextSerial)
     ]);
-    return `VK-${nextSerial}`;
+    return `HOT-${nextSerial}`;
   } catch (err) {
     console.error('generateNextProductCode Neon Error:', err);
-    return 'VK-1008';
+    return 'HOT-1008';
   }
 }

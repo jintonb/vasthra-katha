@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
     <div className="admin-login-layout">
       <div className="login-card">
         <div className="login-header">
-          <h1 className="login-brand">Vasthra Katha</h1>
+          <h1 className="login-brand">Her Own Threads</h1>
           <span className="login-tag">Atelier Catalog System</span>
           <h2 className="login-title-h2">Admin Authorization</h2>
         </div>

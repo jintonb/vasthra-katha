@@ -1,65 +1,74 @@
 import Link from 'next/link';
 import { getProducts, getCategories, getBanners } from '@/lib/db';
 import SareeCard from '@/components/SareeCard';
+import HomeHeroCarousel from '@/components/HomeHeroCarousel';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  // Fetch data directly from local JSON database on server
   const allProducts = await getProducts();
   const categories = await getCategories();
   const allBanners = await getBanners();
 
-  // Filter published active items
+  // Filter active banners
   const activeBanners = allBanners.filter(b => b.isActive);
   const newArrivals = allProducts
     .filter(p => p.isPublished && p.isNewArrival)
-    .slice(0, 4); // Limit to 4 new arrivals on home page
+    .slice(0, 4);
   const featuredProducts = allProducts
     .filter(p => p.isPublished && p.isFeatured)
     .slice(0, 4);
 
-  // Fallback banner if none are active
-  const heroBanner = activeBanners.find(b => b.type === 'home_banner') || {
-    title: "Timeless Elegance in Every Thread",
-    subtitle: "Discover our curated collection of heritage Kanchipuram and handcrafted sarees.",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1600&auto=format&fit=crop",
-    link: "/collection"
-  };
+  // Retrieve all active main banners
+  const homeBanners = activeBanners.filter(b => b.type === 'home_banner');
+
+  const defaultBanners = [
+    {
+      id: 'default-1',
+      title: "Heritage Elegance in Every Thread",
+      subtitle: "Discover our handpicked collection of pure Kanchipuram silk and bridal sarees.",
+      image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1600&q=80",
+      link: "/collection?category=silk-sarees"
+    },
+    {
+      id: 'default-2',
+      title: "Artisanal Banarasi Brocades",
+      subtitle: "Masterfully crafted heritage weaves directly from traditional Indian looms.",
+      image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1600&q=80",
+      link: "/collection?category=banarasi"
+    },
+    {
+      id: 'default-3',
+      title: "Linen & Organza Summer Atelier",
+      subtitle: "Experience lightweight elegance and breathy silhouettes for contemporary styling.",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1600&q=80",
+      link: "/collection?category=organza"
+    }
+  ];
+
+  const displayBanners = homeBanners.length > 0 ? homeBanners : defaultBanners;
 
   const festivalBanner = activeBanners.find(b => b.type === 'festival_banner');
   const offersBanner = activeBanners.find(b => b.type === 'offers_banner');
 
   return (
     <div className="homepage-container">
-      {/* Hero Banner Section */}
-      <section
-        className="hero-slider"
-        style={{ backgroundImage: `url(${heroBanner.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-      >
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1 className="hero-title">{heroBanner.title}</h1>
-          <p className="hero-subtitle">{heroBanner.subtitle}</p>
-          <Link href={heroBanner.link || "/collection"} className="hero-btn">
-            Explore Collection
-          </Link>
-        </div>
-      </section>
+      {/* Hero Slider Carousel Section */}
+      <HomeHeroCarousel banners={displayBanners} />
 
       {/* Brand Intro Summary */}
       <section className="about-widget">
         <div className="about-widget-img-box">
           <img
             src="/brand-intro.png"
-            alt="Vasthra Katha Handloom Craft"
+            alt="Her Own Threads Handloom Craft"
           />
         </div>
         <div className="about-widget-content">
-          <h2>Vasthra Katha</h2>
+          <h2>Her Own Threads</h2>
           <p className="lead-text"><em>Where elegance meets authenticity.</em></p>
           <p>
-            Welcome to Vasthra Katha. We believe a saree is not just an outfit—it is an art form, a heritage, and a standard of grace. We bring you hand-selected, premium quality sarees that represent the pinnacle of Indian weaving traditions.
+            Welcome to Her Own Threads. We believe a saree is not just an outfit—it is an art form, a heritage, and a standard of grace. We bring you hand-selected, premium quality sarees that represent the pinnacle of Indian weaving traditions.
           </p>
           <p>
             From the heavy gold border Kanchipurams to the ethereal lightweight Organza drapes, each piece is selected to highlight the pure beauty of traditional craftsmanship. Explore our collections online and enquire directly for pricing and availability.

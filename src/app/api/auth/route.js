@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getAdminApiKey, isAuthorized } from '@/lib/auth';
+import crypto from 'crypto';
 
-const ADMIN_USERNAME = 'admin';
-const DEFAULT_PASSWORD = 'vasthra123';
+// Cryptographically hashed credentials (SHA-256)
+const HASHED_USERNAME = 'cd771e0c3a8978a5eb5ae7a6aaf614ed39fd3333939a82436a522bc01fcdab62'; // jintonb
+const HASHED_PASSWORD = '81c784960ab216beae58d4362a546dcd5288b14150b8c2498c29394ea1bac4b9'; // Jb@682314#
 const SESSION_COOKIE = 'vasthra_admin_session';
+
+function verifyCredential(input, expectedHash) {
+  if (!input) return false;
+  const hash = crypto.createHash('sha256').update(input).digest('hex');
+  return hash === expectedHash;
+}
 
 export async function GET(request) {
   if (await isAuthorized(request)) {
@@ -20,17 +28,18 @@ export async function POST(request) {
     const { username, password, apiKey } = body;
     const configuredApiKey = getAdminApiKey();
 
-    // Check if valid API key is passed directly or if credentials match
+    // 1. Check API Key authorization
     const isValidApiKey = (apiKey && apiKey === configuredApiKey) ||
                           (request.headers.get('x-api-key') === configuredApiKey);
                           
-    const isValidCredentials = (username === ADMIN_USERNAME || !username) &&
-                               (password === configuredApiKey || password === DEFAULT_PASSWORD);
+    // 2. Check hashed credentials matching (jintonb & Jb@682314#)
+    const isValidCredentials = verifyCredential(username, HASHED_USERNAME) &&
+                               verifyCredential(password, HASHED_PASSWORD);
 
     if (isValidApiKey || isValidCredentials) {
       const response = NextResponse.json({ 
         success: true, 
-        message: 'Authenticated successfully via API Key / Credentials' 
+        message: 'Authenticated successfully' 
       });
       
       const cookieStore = await cookies();
@@ -46,7 +55,7 @@ export async function POST(request) {
     }
 
     return NextResponse.json(
-      { success: false, message: 'Invalid API Key or Credentials' },
+      { success: false, message: 'Invalid Credentials' },
       { status: 401 }
     );
   } catch (error) {

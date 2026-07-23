@@ -29,7 +29,7 @@ export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="sidebar-header">
-        <h2 className="sidebar-brand">Vasthra Katha</h2>
+        <h2 className="sidebar-brand">Her Own Threads</h2>
         <span className="sidebar-badge">Admin Panel</span>
       </div>
 

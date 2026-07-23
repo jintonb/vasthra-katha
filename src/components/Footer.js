@@ -15,7 +15,7 @@ export default function Footer() {
         {/* Col 1: Brand Info */}
         <div className="footer-col brand-col">
           <Link href="/" className="footer-logo">
-            Vasthra Katha
+            Her Own Threads
           </Link>
           <p className="brand-description">
             Weaving heritage and modern aesthetics to bring you the finest collection of handcrafted sarees. Every drape tells a unique story of tradition, craft, and elegance.
@@ -57,23 +57,25 @@ export default function Footer() {
           <h3 className="footer-title">Contact Us</h3>
           <p className="contact-item">
             <strong>Address:</strong><br />
-            Vasthra Kadtha Saree Atelier,<br />
-            Kerala, India
+            Her Own Threads Saree Atelier,<br />
+            Chittoor Road, Ernakulam,<br />
+            Kochi, Kerala - 682011<br />
+            India
           </p>
           <p className="contact-item">
             <strong>Phone:</strong> <a href="tel:+919961768565">+91 9961768565</a>
           </p>
           <p className="contact-item">
-            <strong>WhatsApp:</strong> <a href="https://wa.me/919961768565" target="_blank" rel="noopener noreferrer">+91 9961768565</a>
+            <strong>WhatsApp:</strong> <a href="https://wa.me/919961768565" target="_blank" rel="noopener noreferrer" style={{ color: '#25d366' }}>+91 9961768565</a>
           </p>
           <p className="contact-item">
-            <strong>Email:</strong> <a href="mailto:info@vasthrakadtha.com">info@vasthrakadtha.com</a>
+            <strong>Email:</strong> <a href="mailto:info@herownthreads.com">info@herownthreads.com</a>
           </p>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Vasthra Katha. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Her Own Threads. All Rights Reserved.</p>
         <p className="sub-tag">Curated Collections of Handcrafted Sarees</p>
       </div>
     </footer>

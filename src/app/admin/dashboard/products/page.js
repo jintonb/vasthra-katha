@@ -140,22 +140,58 @@ export default function AdminProductsPage() {
     setShowModal(true);
   };
 
-  const openEditModal = (product) => {
+  const openEditModal = async (product) => {
     setSelectedProductCode(product.code);
-    setForm({
-      ...product,
-      price: product.price || '',
-    });
+    try {
+      const res = await fetch(`/api/products/${product.code}`);
+      if (res.ok) {
+        const fullProduct = await res.json();
+        setForm({
+          ...fullProduct,
+          price: fullProduct.price || '',
+        });
+      } else {
+        setForm({
+          ...product,
+          price: product.price || '',
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch product details:', err);
+      setForm({
+        ...product,
+        price: product.price || '',
+      });
+    }
     setModalMode('edit');
     setShowModal(true);
   };
 
-  const openDuplicateModal = (product) => {
-    setForm({
-      ...product,
-      code: `${product.code}-DUP`,
-      price: product.price || '',
-    });
+  const openDuplicateModal = async (product) => {
+    try {
+      const res = await fetch(`/api/products/${product.code}`);
+      if (res.ok) {
+        const fullProduct = await res.json();
+        setForm({
+          ...fullProduct,
+          code: `${fullProduct.code}-DUP`,
+          price: fullProduct.price || '',
+        });
+      } else {
+        setForm({
+          ...product,
+          code: `${product.code}-DUP`,
+          price: product.price || '',
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch product details:', err);
+      setForm({
+        ...product,
+        code: `${product.code}-DUP`,
+        price: product.price || '',
+      });
+    }
     setModalMode('duplicate');
     setShowModal(true);
   };

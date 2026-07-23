@@ -649,9 +649,25 @@ button, input, select, textarea {
   border-radius: var(--border-radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-sm);
-  height: fit-content;
   position: sticky;
   top: 100px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+/* Premium Scrollbar styling for Filter Sidebar */
+.filter-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.filter-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.filter-sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(125, 10, 42, 0.25);
+  border-radius: 4px;
+}
+.filter-sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(125, 10, 42, 0.45);
 }
 
 .filter-section {

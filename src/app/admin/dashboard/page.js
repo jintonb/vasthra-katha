@@ -25,7 +25,7 @@ export default async function DashboardPage() {
       <div className="dashboard-title-row">
         <div>
           <h1 className="dashboard-title">Atelier Summary</h1>
-          <p className="dashboard-subtitle">Quick overview of your Vasthra Katha digital inventory</p>
+          <p className="dashboard-subtitle">Quick overview of your Her Own Threads digital inventory</p>
         </div>
         <Link href="/admin/dashboard/products" className="admin-add-btn">
           Manage Inventory

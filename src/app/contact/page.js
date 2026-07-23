@@ -1,11 +1,11 @@
 export const metadata = {
-  title: "Contact Us | Vasthra Katha Saree Atelier",
-  description: "Get in touch with Vasthra Katha. View our phone number, email, store address, or send an enquiry.",
+  title: "Contact Us | Her Own Threads Saree Atelier",
+  description: "Get in touch with Her Own Threads. View our phone number, email, store address, or send an enquiry.",
 };
 
 export default function ContactPage() {
   const storePhone = "+91 9961768565";
-  const storeEmail = "info@vasthrakatha.com";
+  const storeEmail = "info@herownthreads.com";
   
   return (
     <div className="static-page-container" style={{ maxWidth: '1100px' }}>
@@ -14,14 +14,14 @@ export default function ContactPage() {
       <div className="contact-layout">
         {/* Left Col: Contact Details */}
         <div className="contact-info-section">
-          <h2>Vasthra Katha Atelier</h2>
+          <h2>Her Own Threads Atelier</h2>
           <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
             We'd love to help you find your perfect saree. Visit our store or get in touch through any of the channels below.
           </p>
 
           <h3>Location Address</h3>
           <p>
-            Vasthra Katha Atelier,<br />
+            Her Own Threads Atelier,<br />
             Chittoor Road, Ernakulam,<br />
             Kochi, Kerala - 682011<br />
             India
@@ -65,7 +65,7 @@ export default function ContactPage() {
               <span className="map-icon">📍</span>
               <h3 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>Find Us on Google Maps</h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '1.5rem' }}>
-                Vasthra Katha Saree Atelier<br />
+                Her Own Threads Saree Atelier<br />
                 Chittoor Road, Kochi, Kerala
               </p>
               <span className="outline-btn" style={{ padding: '0.5rem 1.5rem', fontSize: '0.8rem', background: 'white' }}>

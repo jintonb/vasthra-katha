@@ -57,7 +57,14 @@ export async function GET(request) {
     // Sort by default: latest created first
     filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    return NextResponse.json(filteredProducts);
+    // Optimize listing payload size: exclude full images/videos arrays for catalog listings
+    const optimizedProducts = filteredProducts.map(p => ({
+      ...p,
+      images: [],
+      videos: []
+    }));
+
+    return NextResponse.json(optimizedProducts);
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }
