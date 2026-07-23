@@ -1827,15 +1827,73 @@ button, input, select, textarea {
   }
   
   .hero-title {
-    font-size: 2.4rem;
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .catalog-title {
+    font-size: 2rem;
+  }
+  
+  .catalog-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .search-input-wrapper {
+    max-width: 100%;
+  }
+  
+  .sort-select-wrapper {
+    width: 100%;
+  }
+  
+  .sort-select-wrapper select {
+    width: 100%;
+  }
+  
+  .static-page-container {
+    margin: 2rem auto;
+    padding: 0 1.25rem;
+  }
+  
+  .static-page-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-container {
+    margin: 3rem auto;
+    padding: 0 1.25rem;
+  }
+  
+  .about-widget {
+    padding: 3rem 1.25rem;
+    margin: 3rem auto;
+    gap: 2rem;
+  }
+  
+  .about-widget-img-box img {
+    height: 260px;
   }
   
   .contact-layout {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
   
   .product-info-panel h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  
+  .action-buttons-group {
+    flex-direction: column;
+    gap: 0.75rem;
   }
   
   .modal-form-grid {
