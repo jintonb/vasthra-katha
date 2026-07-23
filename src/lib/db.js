@@ -67,9 +67,16 @@ async function ensureTables() {
         image TEXT NOT NULL,
         link TEXT,
         type VARCHAR(100) NOT NULL,
-        is_active BOOLEAN DEFAULT TRUE
+        is_active BOOLEAN DEFAULT TRUE,
+        show_title BOOLEAN DEFAULT TRUE
       );
     `);
+
+    // Run migration query to guarantee 'show_title' column exists on existing databases
+    await queryDb(`
+      ALTER TABLE banners ADD COLUMN IF NOT EXISTS show_title BOOLEAN DEFAULT TRUE;
+    `);
+
     await queryDb(`
       CREATE TABLE IF NOT EXISTS metadata (
         key VARCHAR(100) PRIMARY KEY,
@@ -248,7 +255,8 @@ export async function getBanners() {
       image: b.image,
       link: b.link || '',
       type: b.type,
-      isActive: Boolean(b.is_active)
+      isActive: Boolean(b.is_active),
+      showTitle: b.show_title === undefined ? true : Boolean(b.show_title)
     }));
   } catch (err) {
     console.error('getBanners Neon Error:', err);
@@ -263,7 +271,7 @@ export async function saveBanners(banners) {
     await queryDb('DELETE FROM banners');
     for (const item of banners) {
       await queryDb(
-        'INSERT INTO banners (id, title, subtitle, image, link, type, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        'INSERT INTO banners (id, title, subtitle, image, link, type, is_active, show_title) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
         [
           item.id,
           item.title,
@@ -271,7 +279,8 @@ export async function saveBanners(banners) {
           item.image,
           item.link || '',
           item.type,
-          item.isActive ? true : false
+          item.isActive ? true : false,
+          item.showTitle !== false ? true : false
         ]
       );
     }

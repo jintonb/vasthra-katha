@@ -23,6 +23,7 @@ export default function CollectionClient({ initialParams = {} }) {
   
   // Sort state
   const [sortBy, setSortBy] = useState('latest');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Dynamic filter values extracted from loaded products
   const [availableFabrics, setAvailableFabrics] = useState([]);
@@ -172,10 +173,19 @@ export default function CollectionClient({ initialParams = {} }) {
         <p className="results-count">
           {loading ? 'Loading catalog...' : `Showing ${sortedProducts.length} premium sarees`}
         </p>
+        
+        {/* Mobile filter minimize/maximize toggler */}
+        <button 
+          onClick={() => setShowMobileFilters(!showMobileFilters)} 
+          className="mobile-filter-toggle-btn"
+          aria-expanded={showMobileFilters}
+        >
+          {showMobileFilters ? 'Hide Catalog Filters ▲' : 'Show Catalog Filters ▼'}
+        </button>
       </div>
 
       {/* Sidebar Filters */}
-      <aside className="filter-sidebar">
+      <aside className={`filter-sidebar ${showMobileFilters ? 'mobile-expanded' : 'mobile-collapsed'}`}>
         <div className="filter-section">
           <h3 className="filter-section-title">Categories</h3>
           <div className="filter-options">

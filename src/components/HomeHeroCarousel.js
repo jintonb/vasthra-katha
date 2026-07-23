@@ -39,16 +39,21 @@ export default function HomeHeroCarousel({ banners = [] }) {
               zIndex: isActive ? 5 : 1,
               pointerEvents: isActive ? 'auto' : 'none',
               transition: 'opacity 1s ease-in-out',
+              cursor: 'pointer'
             }}
           >
-            <div className="hero-overlay"></div>
-            <div className="hero-content">
-              <h1 className="hero-title">{banner.title}</h1>
-              {banner.subtitle && <p className="hero-subtitle">{banner.subtitle}</p>}
-              <Link href={banner.link || "/collection"} className="hero-btn">
-                Explore Collection
-              </Link>
-            </div>
+            <Link href={banner.link || "/collection"} style={{ display: 'block', width: '100%', height: '100%', textDecoration: 'none' }}>
+              <div className="hero-overlay" style={{ opacity: banner.showTitle !== false ? 0.45 : 0.15 }}></div>
+              {banner.showTitle !== false && (
+                <div className="hero-content">
+                  <h1 className="hero-title">{banner.title}</h1>
+                  {banner.subtitle && <p className="hero-subtitle">{banner.subtitle}</p>}
+                  <span className="hero-btn">
+                    Explore Collection
+                  </span>
+                </div>
+              )}
+            </Link>
           </div>
         );
       })}

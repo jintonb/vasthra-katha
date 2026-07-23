@@ -1,17 +1,15 @@
 import Link from 'next/link';
-import { getProducts, getCategories, getBanners } from '@/lib/db';
-import SareeCard from '@/components/SareeCard';
+import { getCategories, getProducts, getBanners } from '@/lib/db';
 import HomeHeroCarousel from '@/components/HomeHeroCarousel';
+import SareeCard from '@/components/SareeCard';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const allProducts = await getProducts();
   const categories = await getCategories();
+  const allProducts = await getProducts();
   const allBanners = await getBanners();
 
-  // Filter active banners
-  const activeBanners = allBanners.filter(b => b.isActive);
   const newArrivals = allProducts
     .filter(p => p.isPublished && p.isNewArrival)
     .slice(0, 4);
@@ -19,8 +17,49 @@ export default async function HomePage() {
     .filter(p => p.isPublished && p.isFeatured)
     .slice(0, 4);
 
-  // Retrieve all active main banners
-  const homeBanners = activeBanners.filter(b => b.type === 'home_banner');
+  // Map homepage sections explicitly to specific active Banner IDs
+  const heroBanner = allBanners.find(b => b.id === 'banner-hero' && b.isActive);
+  const festivalBanner = allBanners.find(b => b.id === 'banner-festival' && b.isActive);
+  const offersBanner = allBanners.find(b => b.id === 'banner-offers' && b.isActive);
+  const ourStoryBanner = allBanners.find(b => b.id === 'our-story' && b.isActive);
+
+  // Parse and flatten carousel slides from banner-hero
+  const carouselSlides = [];
+  if (heroBanner) {
+    try {
+      if (heroBanner.image.startsWith('[')) {
+        const parsedImages = JSON.parse(heroBanner.image);
+        for (const img of parsedImages) {
+          carouselSlides.push({
+            id: `hero-${img}`,
+            title: heroBanner.title || '',
+            subtitle: heroBanner.subtitle || '',
+            image: img,
+            link: heroBanner.link || '/collection',
+            showTitle: heroBanner.showTitle !== false
+          });
+        }
+      } else {
+        carouselSlides.push({
+          id: heroBanner.id,
+          title: heroBanner.title || '',
+          subtitle: heroBanner.subtitle || '',
+          image: heroBanner.image,
+          link: heroBanner.link || '/collection',
+          showTitle: heroBanner.showTitle !== false
+        });
+      }
+    } catch (e) {
+      carouselSlides.push({
+        id: heroBanner.id,
+        title: heroBanner.title || '',
+        subtitle: heroBanner.subtitle || '',
+        image: heroBanner.image,
+        link: heroBanner.link || '/collection',
+        showTitle: heroBanner.showTitle !== false
+      });
+    }
+  }
 
   const defaultBanners = [
     {
@@ -46,10 +85,22 @@ export default async function HomePage() {
     }
   ];
 
-  const displayBanners = homeBanners.length > 0 ? homeBanners : defaultBanners;
+  const displayBanners = carouselSlides.length > 0 ? carouselSlides : defaultBanners;
 
-  const festivalBanner = activeBanners.find(b => b.type === 'festival_banner');
-  const offersBanner = activeBanners.find(b => b.type === 'offers_banner');
+  const getFirstBannerImage = (banner, fallback) => {
+    if (!banner) return fallback;
+    try {
+      if (banner.image.startsWith('[')) {
+        const parsed = JSON.parse(banner.image);
+        return parsed[0] || fallback;
+      }
+    } catch (e) {}
+    return banner.image || fallback;
+  };
+
+  const festivalBannerImg = getFirstBannerImage(festivalBanner, null);
+  const offersBannerImg = getFirstBannerImage(offersBanner, null);
+  const ourStoryImg = getFirstBannerImage(ourStoryBanner, '/brand-intro.png');
 
   return (
     <div className="homepage-container">
@@ -60,7 +111,7 @@ export default async function HomePage() {
       <section className="about-widget">
         <div className="about-widget-img-box">
           <img
-            src="/brand-intro.png"
+            src={ourStoryImg}
             alt="Her Own Threads Handloom Craft"
           />
         </div>
@@ -120,11 +171,11 @@ export default async function HomePage() {
       )}
 
       {/* Offers Banner Section if active */}
-      {offersBanner && (
+      {offersBanner && offersBannerImg && (
         <section
           className="hero-slider"
           style={{
-            backgroundImage: `url(${offersBanner.image})`,
+            backgroundImage: `url(${offersBannerImg})`,
             height: '40vh',
             minHeight: '280px',
             margin: '5rem 0'
@@ -145,13 +196,12 @@ export default async function HomePage() {
         </section>
       )}
 
-
       {/* Festival Promo Banner if active */}
-      {festivalBanner && (
+      {festivalBanner && festivalBannerImg && (
         <section
           className="hero-slider"
           style={{
-            backgroundImage: `url(${festivalBanner.image})`,
+            backgroundImage: `url(${festivalBannerImg})`,
             height: '45vh',
             minHeight: '300px',
             margin: '5rem 0'
